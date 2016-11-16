@@ -1,0 +1,44 @@
+* { box-sizing: border-box; }
+
+body { 
+font-family: sans-serif; 
+padding-top:60px;
+}
+
+.navbar-brand > img {
+	float: left;
+	width: 80px;
+	padding-top: 8px;
+}
+
+
+
+/* ---- grid ---- */
+
+.grid {
+  background: #DDD;
+  max-width: 1024px;
+}
+
+/* clearfix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- grid-item ---- */
+
+.grid-item {
+  float: left;
+  background: #EEEEEE;
+  padding: 2px;
+}
+
+.grid-item--width2 { width:  40%; }
+.grid-item--width3 { width:  60%; }
+
+.grid-item--height2 { height: 200px; }
+.grid-item--height3 { height: 260px; }
+.grid-item--height4 { height: 360px; }
+
