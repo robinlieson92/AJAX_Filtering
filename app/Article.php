@@ -6,7 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-     protected $fillable = [
-      'title', 'content'
+    protected $fillable = [
+      'title', 'content', 'writer'
     ];
+
+    public static function valid() {
+    return array(
+      'content' => 'required'
+      );
+	}
+
+	public function comments() {
+	   return $this->hasMany('Comment', 'article_id');
+  	}
 }

@@ -38,6 +38,7 @@ class GalleriesController extends Controller
     public static function save_image($gallery, $req)
     {
         $gallery->title = $req->input('title');
+        $gallery->description = $req->input('description');
         
         $image = $req->file('urlimage');
         

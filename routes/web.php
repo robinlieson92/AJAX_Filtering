@@ -15,6 +15,7 @@ Route::get('signup', 'UsersController@signup')->name('signup');
 Route::post('signup', 'UsersController@signup_store')->name('signup.store');
 
 Route::resource('articles', 'ArticlesController');
+Route::resource('comments', 'CommentsController');
 Route::resource('galleries', 'GalleriesController');
 
 Route::get('articles.index', 'ArticlesController@index');

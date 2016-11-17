@@ -17,7 +17,7 @@ padding-top:60px;
 
 .grid {
   background: #DDD;
-  max-width: 1024px;
+  max-width: 1200px;
 }
 
 /* clearfix */
@@ -30,9 +30,11 @@ padding-top:60px;
 /* ---- grid-item ---- */
 
 .grid-item {
+  width: 210px;
+  height: 110px;
   float: left;
-  background: #EEEEEE;
-  padding: 2px;
+  background: #DDD;
+  padding: 5px;
 }
 
 .grid-item--width2 { width:  40%; }

@@ -26,7 +26,8 @@ class ArticleRequest extends FormRequest
         //$id = $this->article;
         return [
             'title' => 'required|max:255',
-            'content' => 'required|min:50'
+            'content' => 'required|min:50',
+            'writer' => 'required|max:255'
         ];
     }
 
