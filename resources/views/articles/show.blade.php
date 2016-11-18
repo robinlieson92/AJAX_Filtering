@@ -6,6 +6,16 @@
     <i>By {!! $article->writer !!}</i>
   </div>
 
+  <p><h4>Comments</h4></p>
+@foreach($comments as $comment)
+<div style="outline: 1px solid #74AD1B;">
+  <p>
+    {!! $comment->content !!}
+  </p>
+  <i>{!! $comment->user !!}</i>
+</div>
+@endforeach
+
   <div>
   <h3><i><u>Give Comments</u></i></h3>
   {!! Form::open(['route' => 'comments.store', 'class' => 'form-horizontal', 'role' => 'form']) !!}
@@ -28,6 +38,7 @@
       {!! Form::label('user', 'User', array('class' => 'col-lg-3 control-label')) !!}
       <div class="col-lg-9">
         {!! Form::text('user', null, array('class' => 'form-control')) !!}
+        {!! $errors->first('user') !!}
       </div>
       <div class="clear"></div>
     </div>
@@ -40,7 +51,6 @@
     </div>
   {!! Form::close() !!}
   </div>
-
   <div>
   {!! Form::open(array('route' => array('articles.destroy', $article->id), 'method' => 'delete')) !!}
     {!! link_to(route('articles.index'), "Back", ['class' => 'btn btn-raised btn-info']) !!}
