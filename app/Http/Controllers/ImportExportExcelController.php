@@ -31,7 +31,11 @@ class ImportExportExcelController extends Controller
             })->get();
             if(!empty($data) && $data->count()){
                 foreach ($data as $key => $value) {
-                    $insert[] = ['title' => $value->title, 'description' => $value->description];
+                    $insert[] = [
+                    'title' => $value->title, 
+                    'content' => $value->content,
+                    'writer' => $value->writer
+                    ];
                 }
                 if(!empty($insert)){
                     DB::table('articles')->insert($insert);
