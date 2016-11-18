@@ -1,5 +1,6 @@
 @extends("layouts.application")
 @section("content")
+
   <div class="row">
     <h1>{!! $article->title !!}</h1>
     <p>{!! $article->content !!}</p>
@@ -12,7 +13,7 @@
   <p>
     {!! $comment->content !!}
   </p>
-  <i>{!! $comment->user !!}</i>
+  <i>By : {!! $comment->user !!}</i>
 </div>
 @endforeach
 
@@ -45,17 +46,12 @@
     <div class="form-group">
       <div class="col-lg-3"></div>
       <div class="col-lg-9">
+        {!! link_to(route('articles.index'), "Back", ['class' => 'btn btn-raised btn-info']) !!}
         {!! Form::submit('Comment', array('class' => 'btn btn-raised btn-primary')) !!}
       </div>
       <div class="clear"></div>
     </div>
   {!! Form::close() !!}
   </div>
-  <div>
-  {!! Form::open(array('route' => array('articles.destroy', $article->id), 'method' => 'delete')) !!}
-    {!! link_to(route('articles.index'), "Back", ['class' => 'btn btn-raised btn-info']) !!}
-   {!! link_to(route('articles.edit', $article->id), 'Edit', ['class' => 'btn btn-raised btn-warning']) !!}
-   {!! Form::submit('Delete', array('class' => 'btn btn-raised btn-danger', "onclick" => "return confirm('are you sure?')")) !!}
-  {!! Form::close() !!}
-  </div>
+  
 @stop

@@ -46,7 +46,6 @@ class GalleriesController extends Controller
             {
                 $path = $req->urlimage->path(); 
                 $imagename = $image->getClientOriginalName();
-                //$file->move('public/uploads', $file->getClientOriginalName());
 
                 $gallery->url ="ori_".$imagename;
                 $gallery->thumbnail ="thumb_".$imagename;
@@ -71,10 +70,7 @@ class GalleriesController extends Controller
      */
     public function store(GalleryRequest $request)
     {
-        $validation = Validator::make($request->all(), [
-            'title'     => 'required',
-            'urlimage'  => 'required|image|mimes:jpeg,png,jpg|max:200'
-            ]);
+        $validation = Validator::make($request->all());
         if ($validation->fails() ){
             return redirect()->back()->withInput()
                              ->with('errors',$validation->errors() );

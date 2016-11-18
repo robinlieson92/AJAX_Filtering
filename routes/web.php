@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('signup', 'UsersController@signup')->name('signup');
-Route::post('signup', 'UsersController@signup_store')->name('signup.store');
+//Route::get('signup', 'UsersController@signup')->name('signup');
+//Route::post('signup', 'UsersController@signup_store')->name('signup.store');
 
 Route::resource('articles', 'ArticlesController');
 Route::resource('comments', 'CommentsController');
@@ -20,6 +20,10 @@ Route::resource('galleries', 'GalleriesController');
 
 Route::get('articles.index', 'ArticlesController@index');
 Route::get('galleries.index', 'GalleriesController@index');
+Route::get('export_articles', 'ImportExportExcelController@exportExcelArticles')
+		->name('export.articles');
+Route::post('import_articles', 'ImportExportExcelController@importExcelArticles')
+		->name('import.articles');
 
 Route::get('/', ['as' => 'root', 'uses' => function () {
     return view('welcome');
