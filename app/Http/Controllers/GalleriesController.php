@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Gallery;
 use App\Http\Requests\GalleryRequest;
-use Validator;
 use File;
 use Session;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class GalleriesController extends Controller
 {
@@ -35,33 +33,6 @@ class GalleriesController extends Controller
         return view('galleries.create');
     }
 
-    public static function save_image($gallery, $req)
-    {
-        $gallery->title = $req->input('title');
-        $gallery->description = $req->input('description');
-        
-        $image = $req->file('urlimage');
-        
-        if ($req->file('urlimage')->isValid() )
-            {
-                $path = $req->urlimage->path(); 
-                $imagename = $image->getClientOriginalName();
-
-                $gallery->url ="ori_".$imagename;
-                $gallery->thumbnail ="thumb_".$imagename;
-                $gallery->showimage ="show_".$imagename;
-                $gallery->save();
-                $directory = public_path()."/upload_image/".$gallery->id;
-
-                if(!File::exists($directory)){
-                    File::makeDirectory($directory,$mode=0777,true,true);
-                }
-                Image::make($image)->save($directory."/ori_".$imagename);
-                Image::make($image)->resize('200','100')->save($directory."/thumb_".$imagename);
-                Image::make($image)->resize('600','300')->save($directory."/show_".$imagename);
-            }
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -70,17 +41,10 @@ class GalleriesController extends Controller
      */
     public function store(GalleryRequest $request)
     {
-        $validation = Validator::make($request->all());
-        if ($validation->fails() ){
-            return redirect()->back()->withInput()
-                             ->with('errors',$validation->errors() );
-        }
-        else {
             $gallery = new Gallery;
-            GalleriesController::save_image($gallery,$request); 
+            Gallery::save_image($gallery,$request); 
             Session::flash("notice", "Gallery success created");
             return redirect()->route("galleries.index");
-        }
         
     }
 
@@ -119,30 +83,14 @@ class GalleriesController extends Controller
      */
     public function update(GalleryRequest $request, $id)
     {
-        $validation = Validator::make($request->all(), [
-            'title'     => 'required',
-            'urlimage'  => 'required|image|mimes:jpeg,png,jpg|max:200'
-            ]);
-        if ($validation->fails() ){
-            return redirect()->back()->withInput()
-                             ->with('errors',$validation->errors() );
-        }
-        else{
             $gallery = Gallery::find($id);
             //delete file
-            $path1 = public_path()."/upload_image/".$gallery->id."/".$gallery->url;
-            $path2 = public_path()."/upload_image/".$gallery->id."/".$gallery->showimage;
-            $path3 = public_path()."/upload_image/".$gallery->id."/".$gallery->thumbnail;
-            
-            File::delete($path1);
-            File::delete($path2);
-            File::delete($path3);
+            Gallery::delete_files($gallery);
 
             //save image
-            GalleriesController::save_image($gallery,$request);
+            Gallery::save_image($gallery,$request);
             Session::flash("notice", "Gallery success updated");
             return redirect()->route("galleries.show", $id);
-        }   
     }
 
     /**

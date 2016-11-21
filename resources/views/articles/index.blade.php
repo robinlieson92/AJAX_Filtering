@@ -10,6 +10,7 @@
   		 <div class="col-sm-4">
 	  		{!! Form::text(null, null, array('class' => 'form-control', 'placeholder'=>"Browse ...", 'readonly' => "")) !!}
 	    	{!! Form::file('import_file', null, array('multiple'=>"", 'id' => "import")) !!}
+        <div class="text-danger">{!! $errors->first('import_file') !!}</div>
 	    </div>
 	</div>
 	<div class="form-group">

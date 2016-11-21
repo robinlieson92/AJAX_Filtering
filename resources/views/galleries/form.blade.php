@@ -31,11 +31,7 @@
 <div class="form-group">
   <div class="col-lg-3"></div>
   <div class="col-lg-9">
-    @if (Route::currentRouteName() == "galleries.create")  
-    {!! Form::submit('Upload', array('class' => 'btn btn-raised btn-primary')) !!}
-    @else
-    {!! Form::submit('Update', array('class' => 'btn btn-raised btn-primary')) !!}
-    @endif
+    @include("helper.form_edit_gallery")
    
     {!! link_to(route('galleries.index'), "Back", ['class' => 'btn btn-raised btn-info']) !!}
 

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 use Session, Excel;
-use Illuminate\Support\Facades\Input;
-use DB;
+use App\Http\Requests\ImportExcelRequest;
 use App\Article;
 
 
@@ -23,10 +22,31 @@ class ImportExportExcelController extends Controller
     	})->download('xls');
     }
 
-    public function importExcelArticles()
+    public function exportExcelComments($id)
     {
-        if(Input::hasFile('import_file')){
-            $path = Input::file('import_file')->getRealPath();
+        $article_title = Article::find($id)->title;
+        $article = Article::select('title','content','writer')
+                        ->where('id',$id)->get()->toArray();
+        $comments = Article::find($id)->comments()
+            ->get(['content','user','created_at','updated_at'])->toArray();
+
+        return Excel::create('ExportComments'.$article_title, 
+            function($excel_comments) use ($article, $comments) {
+            $excel_comments->sheet('sheet_article', function($sheet_article) use ($article)
+            {
+                $sheet_article->fromArray($article);
+            });
+            $excel_comments->sheet('sheet_comments', function($sheet_comment) use ($comments)
+            {
+                $sheet_comment->fromArray($comments);
+            });  
+        })->download('xls');
+    }
+
+    public function importExcelArticles(ImportExcelRequest $request)
+    {
+        if($request->file('import_file')->isValid()){
+            $path = $request->file('import_file')->getRealPath();
             $data = Excel::load($path, function($reader) {
             })->get();
             if(!empty($data) && $data->count()){
@@ -38,10 +58,15 @@ class ImportExportExcelController extends Controller
                     ];
                 }
                 if(!empty($insert)){
-                    DB::table('articles')->insert($insert);
-                    dd('Insert Record successfully.');
+                    Article::insert($insert);
+                    Session::flash("notice", "Insert Record successfully");
+                    return redirect()->route("articles.index");
                 }
             }
+        }
+        else{
+            Session::flash("notice", "Insert Record error");
+            return redirect()->route("articles.index");
         }
         return back();
     }

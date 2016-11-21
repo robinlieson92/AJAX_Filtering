@@ -1,13 +1,15 @@
 @extends("layouts.application")
 @section("content")
 
+{!! link_to(route('export.comments', $article->id), "Export", ["class"=>"pull-right btn btn-raised btn-success"]) !!}
+
   <div class="row">
     <h1>{!! $article->title !!}</h1>
     <p>{!! $article->content !!}</p>
     <i>By {!! $article->writer !!}</i>
   </div>
 
-  <p><h4>Comments</h4></p>
+  <p><h4>{!! $article->comments->count() !!} Comments</h4></p>
 @foreach($comments as $comment)
 <div style="outline: 1px solid #74AD1B;">
   <p>

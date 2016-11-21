@@ -24,6 +24,8 @@ Route::get('export_articles', 'ImportExportExcelController@exportExcelArticles')
 		->name('export.articles');
 Route::post('import_articles', 'ImportExportExcelController@importExcelArticles')
 		->name('import.articles');
+Route::get('export_comments/{id}', 'ImportExportExcelController@exportExcelComments')
+		->name('export.comments');	
 
 Route::get('/', ['as' => 'root', 'uses' => function () {
     return view('welcome');
