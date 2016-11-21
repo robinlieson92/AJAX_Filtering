@@ -14,6 +14,14 @@
       <li>{!! link_to(route('root'), " Home", ['class' => 'glyphicon glyphicon-home']) !!}</li>
       <li>{!! link_to(route('galleries.index'), " Gallery", ['class' => 'glyphicon glyphicon-camera']) !!}</li>
       <li>{!! link_to(route('articles.index'), " Article", ['class' => 'glyphicon glyphicon-list-alt']) !!}</li>
+
+      @if (Sentinel::check())
+        <li>{!! link_to(route('logout'),' Logout',['class' => 'glyphicon glyphicon-log-out']) !!}</li>
+        <li><a>Wellcome {!! Sentinel::getUser()->email !!}</a></li>
+      @else
+        <li>{!! link_to(route('signup'), ' Signup', ['class' => 'glyphicon glyphicon-user']) !!}</li>
+        <li>{!! link_to(route('login'), ' Login', ['class' => 'glyphicon glyphicon-log-in']) !!}</li>
+      @endif
     </ul>
     </div>
   </div>
