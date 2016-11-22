@@ -23,6 +23,11 @@ class ArticlesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            if($request->keywords) {
+                $articles = Article::where('title', 'like', '%'.$request->keywords.'%')
+                    ->orWhere('content', 'like', '%'.$request->keywords.'%')
+                    ->paginate(2);
+            }
             $articles = Article::paginate(2);
             $view = (String)view('articles._index')
                 ->with('articles', $articles)

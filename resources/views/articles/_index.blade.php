@@ -1,3 +1,4 @@
+@include("articles.search")
 <div class="row">
     {!! link_to(route("articles.create"), "Create", ["class"=>"pull-right btn btn-raised btn-primary"]) !!}  
   	{!! link_to(route("export.articles"), "Export", ["class"=>"pull-right btn btn-raised btn-success"]) !!}
@@ -22,3 +23,5 @@
   <div id="list-articles">
     @include('articles.list')  
   </div>
+
+  @include("articles.javascript")
