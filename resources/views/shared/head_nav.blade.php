@@ -13,7 +13,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li>{!! link_to(route('root'), " Home", ['class' => 'glyphicon glyphicon-home']) !!}</li>
       <li>{!! link_to(route('galleries.index'), " Gallery", ['class' => 'glyphicon glyphicon-camera']) !!}</li>
-      <li>{!! link_to(route('articles.index'), " Article", ['class' => 'glyphicon glyphicon-list-alt']) !!}</li>
+      <li><a href="#" class="article_link glyphicon glyphicon-list-alt"> Articles</a></li>
 
       @if (Sentinel::check())
         <li>{!! link_to(route('logout'),' Logout',['class' => 'glyphicon glyphicon-log-out']) !!}</li>

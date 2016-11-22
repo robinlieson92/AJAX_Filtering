@@ -20,12 +20,19 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::paginate(10);
-        
-        return view('articles.index')
-        ->with('articles', $articles);
+        if ($request->ajax()) {
+            $articles = Article::paginate(2);
+            $view = (String)view('articles._index')
+                ->with('articles', $articles)
+                ->render();
+            return response()->json($view);
+        } else {
+            $articles = Article::paginate(2);
+            return view('articles.index')
+                ->with('articles', $articles);
+        }
     }
 
     /**

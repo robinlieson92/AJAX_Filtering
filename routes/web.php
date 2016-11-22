@@ -32,8 +32,8 @@ Route::resource('articles', 'ArticlesController');
 Route::resource('comments', 'CommentsController');
 Route::resource('galleries', 'GalleriesController');
 
-Route::get('articles.index', 'ArticlesController@index');
-Route::get('galleries.index', 'GalleriesController@index');
+Route::get('articles', 'ArticlesController@index')->name('articles.index');
+Route::get('galleries', 'GalleriesController@index')->name('galleries.index');
 Route::get('export_articles', 'ImportExportExcelController@exportExcelArticles')
 		->name('export.articles');
 Route::post('import_articles', 'ImportExportExcelController@importExcelArticles')

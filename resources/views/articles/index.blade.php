@@ -1,26 +1,31 @@
 @extends("layouts.application")
 @section("content")
-  <div class="row">
-    {!! link_to(route("articles.create"), "Create", ["class"=>"pull-right btn btn-raised btn-primary"]) !!}  
-  	{!! link_to(route("export.articles"), "Export", ["class"=>"pull-right btn btn-raised btn-success"]) !!}
-
-  	{!! Form::open(['route' => 'import.articles', 'files'=>true, 'class' => 'form-horizontal', 'role' => 'form']) !!}
-  	<div class="form-group">
-  		{!! Form::label('import', 'Import', array('class' => 'col-sm-8 control-label')) !!}
-  		 <div class="col-sm-4">
-	  		{!! Form::text(null, null, array('class' => 'form-control', 'placeholder'=>"Browse ...", 'readonly' => "")) !!}
-	    	{!! Form::file('import_file', null, array('multiple'=>"", 'id' => "import")) !!}
-        <div class="text-danger">{!! $errors->first('import_file') !!}</div>
-	    </div>
-	</div>
-	<div class="form-group">
-	{!! Form::submit('Import', array('class' => 'btn btn-raised btn-primary pull-right')) !!}
-	</div>
-	 {!! Form::close() !!}
-
-    <h2 class="pull-left">List Articles</h2>
-
+  @include("articles._index")
   
-  </div>
-  @include('articles.list')
+  <script>
+    $(document).ready(function() {
+      $(document).on('click', '.pagination a', function(e) {
+        get_page($(this).attr('href').split('page=')[1]);
+        e.preventDefault();
+      });
+    });
+
+    function get_page(page) {
+      $.ajax({
+        url : '/articles?page='+page,
+        type : "GET",
+        dataType : 'json',
+        success : function(data) {
+          $('.panel-body').html(data);
+        },
+        error : function(xhr, status, error) {
+          console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);
+        },
+        complete : function() {
+          alreadyloading = false;
+        }
+      });
+    }
+  </script>
+
 @stop

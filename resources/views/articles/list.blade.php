@@ -4,6 +4,7 @@
   <p>
     {!! str_limit($article->content, 250) !!}
   </p>
+  <i>By {!! $article->writer !!}</i>
 </article>
 <div>
   {!! Form::open(array('route' => array('articles.destroy', $article->id), 'method' => 'delete')) !!}
