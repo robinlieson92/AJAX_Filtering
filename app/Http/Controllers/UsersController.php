@@ -19,7 +19,9 @@ class UsersController extends Controller
 	    //// below code will register and automatic activate account user
 	    //Sentinel::register($request, true);
 	    //// or
-	    Sentinel::registerAndActivate($request->all());
+      $writerrole = Sentinel::findRoleByName('Writer');
+	    Sentinel::registerAndActivate($request->all())
+        ->roles()->attach($writerrole);
 	    Session::flash('notice', 'Success create new user');
 	    return redirect()->back();
   	}
