@@ -1,7 +1,8 @@
 @extends("layouts.application")
 @section("content")
 
-  {!! Form::open(['route' => 'signup.store', 'class' => 'form-horizontal', 'role' => 'form']) !!}
+  {!! Form::open(['route' => 'signup.store', 'class' => 'form-horizontal', 'role' => 'form',
+  'oninput' => 'name.value = first_name.value+" "+last_name.value']) !!}
     <div class="form-group">
 
       {!! Form::label('first_name', 'First Name', array('class' => 'col-lg-3 control-label')) !!}
@@ -43,6 +44,13 @@
       {!! Form::label('password_confirmation', 'Password Confirm', array('class' => 'col-lg-3 control-label')) !!}
       <div class="col-lg-4">
         {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-lg-4">
+        {!! Form::hidden('name', null, array('class' => 'form-control')) !!}
       </div>
       <div class="clear"></div>
     </div>

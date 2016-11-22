@@ -5,4 +5,3 @@ $('.grid').masonry({
   columnWidth: 10
 });
 
-

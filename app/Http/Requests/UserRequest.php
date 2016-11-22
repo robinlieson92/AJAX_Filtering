@@ -25,7 +25,6 @@ class UserRequest extends FormRequest
     public function rules()
     {
         // $id = $this->user;
-        dd(Request::all());
         return [
             'email' => 'required|email|unique:users,email',//.$id,
             'password' => 'required|min: 8|confirmed',
