@@ -6,7 +6,7 @@ $('.article_link').click(function(e){
       dataType: "json",
       success: function (data)
       {
-        $('.panel-body').html(data);
+        $('.list').html(data);
       },
       error: function (xhr, status)
       {

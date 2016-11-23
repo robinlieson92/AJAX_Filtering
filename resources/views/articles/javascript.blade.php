@@ -12,7 +12,7 @@
       type : "GET",
       dataType : "json",
       success : function(data) {
-        $('.panel-body').html(data);
+        $('.list').html(data);
       },
       error : function(xhr, status, error) {
         console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);
@@ -34,8 +34,7 @@
         'keywords' : $('#keywords').val()
       },
       success : function(data) {
-        alert(data);
-        $('.panel-body').html(data);
+        $('.list').html(data);
       },
       error : function(xhr, status) {
         console.log(xhr.error + " ERROR STATUS : " + status);

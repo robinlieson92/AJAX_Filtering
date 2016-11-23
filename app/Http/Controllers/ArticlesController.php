@@ -26,9 +26,12 @@ class ArticlesController extends Controller
             if($request->keywords) {
                 $articles = Article::where('title', 'like', '%'.$request->keywords.'%')
                     ->orWhere('content', 'like', '%'.$request->keywords.'%')
+                    ->orWhere('writer','like','%'.$request->keywords.'%')
                     ->paginate(2);
             }
-            $articles = Article::paginate(2);
+            else {
+                $articles = Article::paginate(2);
+            }
             $view = (String)view('articles._index')
                 ->with('articles', $articles)
                 ->render();
