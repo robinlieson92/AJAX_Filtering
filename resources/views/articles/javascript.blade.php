@@ -1,3 +1,4 @@
+<!-- script pagination -->
 <script>
   $(document).ready(function() {
     $(document).on('click', '.pagination a', function(e) {
@@ -12,7 +13,7 @@
       type : "GET",
       dataType : "json",
       success : function(data) {
-        $('.list').html(data);
+        $('.list').html(data['view']);
       },
       error : function(xhr, status, error) {
         console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);
@@ -24,6 +25,7 @@
   }
 </script>
 
+<!-- script searching -->
 <script>
   $('#search').on('click', function(){
     $.ajax({
@@ -34,7 +36,7 @@
         'keywords' : $('#keywords').val()
       },
       success : function(data) {
-        $('.list').html(data);
+        $('.list').html(data['view']);
       },
       error : function(xhr, status) {
         console.log(xhr.error + " ERROR STATUS : " + status);
@@ -44,4 +46,41 @@
       }
     });
   });
+</script>
+
+<!-- script sorting -->
+<script>
+$(document).ready(function() {
+  $(document).on('click', '#id', function(e) {
+    sort_articles();
+    e.preventDefault();
+  });
+});
+function sort_articles() {
+  $('#id').on('click', function() {
+    $.ajax({
+      url : '/articles',
+      typs : "GET",
+      dataType : 'json',
+      data : {
+        "direction" : $('#direction').val()
+      },
+      success : function(data) {
+        $('.list').html(data['view']);
+        $('#direction').val(data['direction']);
+        if(data['direction'] == 'asc') {
+          $('.ic-direction').attr({class: "gylphicon glyphicon-arrow-up"});
+        } else {
+          $('.ic-direction').attr({class: "gylphicon glyphicon-arrow-down"});
+        }
+      },
+      error : function(xhr, status, error) {
+        console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);
+      },
+      complete : function() {
+        alreadyloading = false;
+      }
+    });
+  });
+}
 </script>

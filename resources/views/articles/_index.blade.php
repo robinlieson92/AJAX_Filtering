@@ -3,5 +3,6 @@
 </div>
 
 <div id="list-articles">
-  @include('articles.list')  
+  @include('articles._list')  
 </div>
+

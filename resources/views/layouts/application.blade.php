@@ -42,6 +42,5 @@
           </div>
         </div>
       </div>
-        <script src="/assets/js/custom/custom.js"></script>
     </body>
   </html>
