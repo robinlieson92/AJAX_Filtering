@@ -6,6 +6,7 @@
         <tr>
           <th><a id="id" class="ic-direction"> ID</a></th>
           <th class="text-center">Title</th>
+          <th class="text-center">Created At</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
@@ -14,6 +15,7 @@
           <tr>
             <td>{!! $article->id !!}</td>
             <td class="text-center">{!! $article->title !!}</td>
+            <td class="text-center">{!! $article->created_at !!}</td>
             <td>
               {!!link_to('articles/'.$article->id, 'Show', array('class' => 'btn btn-raised btn-info'))!!}
               {!!link_to('articles/'.$article->id.'/edit', 'Edit', array('class' => 'btn btn-raised btn-warning'))!!}

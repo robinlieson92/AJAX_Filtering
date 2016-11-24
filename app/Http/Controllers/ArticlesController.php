@@ -23,24 +23,15 @@ class ArticlesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            if($request->keywords) {
-                $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
-                $articles = Article::where('title', 'like', '%'.$request->keywords.'%')
-                    ->orWhere('content', 'like', '%'.$request->keywords.'%')
-                    ->orWhere('writer','like','%'.$request->keywords.'%')
-                    ->orderBy('id',$request->direction)
-                    ->paginate(2);
-            }
-            else {
-                $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
-                $articles = Article::orderBy('id',$request->direction)->paginate(2);
-            }
+            $hasil = Article::request_ajax($request);
+            // $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
+            $direction = $hasil['direction'];
             $view = (String)view('articles._index')
-                ->with('articles', $articles)
-                ->render();
-            return response()->json(['view' => $view, 'direction' => $direction]);
+            ->with('articles', $hasil['view'])
+            ->render();
+        return response()->json(['view' => $view,'direction' => $direction]);
         } else {
-            $articles = Article::orderBy('created_at','desc')->paginate(2);
+            $articles = Article::orderBy('created_at', 'asc')->paginate(2);
             return view('articles.index')
                 ->with('articles', $articles);
         }
