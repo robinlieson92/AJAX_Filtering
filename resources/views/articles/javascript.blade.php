@@ -24,6 +24,15 @@
         console.log(data);
         $('.list').html(data['view']);
         $('#direction').val(data['direction']);
+        if(data['direction'] == 'asc') {
+
+          $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-up"});
+
+        } else {
+
+          $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-down"});
+
+        }
       },
       error : function(xhr, status, error) {
         console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);
@@ -73,6 +82,15 @@ function sort_articles() {
         console.log(data);
         $('.list').html(data['view']);
         $('#direction').val(data['direction']);
+        if(data['direction'] == 'asc') {
+
+        $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-up"});
+
+        } else {
+
+        $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-down"});
+
+        }
       },
       error : function(xhr, status, error) {
         console.log(xhr.error + "\n ERROR STATUS : " + status + "\n" + error);

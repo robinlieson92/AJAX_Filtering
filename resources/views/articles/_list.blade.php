@@ -4,7 +4,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th><a id="id" class="ic-direction"> ID</a></th>
+          <th><a id="id" class="ic-direction">ID</a></th>
           <th class="text-center">Title</th>
           <th class="text-center">Created At</th>
           <th class="text-center">Action</th>

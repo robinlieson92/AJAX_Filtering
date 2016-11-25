@@ -31,7 +31,7 @@ class ArticlesController extends Controller
             ->render();
         return response()->json(['view' => $view,'direction' => $direction]);
         } else {
-            $articles = Article::orderBy('created_at', 'asc')->paginate(2);
+            $articles = Article::orderBy('created_at', 'desc')->paginate(4);
             return view('articles.index')
                 ->with('articles', $articles);
         }

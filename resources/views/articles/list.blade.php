@@ -16,3 +16,5 @@
 @endforeach
 
 {!! $articles->render() !!}
+
+<input id="direction" type="hidden" value="asc" />
