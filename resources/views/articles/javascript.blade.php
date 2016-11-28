@@ -44,6 +44,12 @@
   }
 
 // script searching
+  $('#keywords').on('keyup', function(event)
+    {
+      if (event.keyCode == 13) {
+        $('#search').click(); }
+    });
+
   $('#search').on('click', function(){
     $.ajax({
       url : '/articles',

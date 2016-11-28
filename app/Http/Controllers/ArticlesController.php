@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Article;
+use DB;
 use App\Http\Requests\ArticleRequest;
 use Session;
 
@@ -31,9 +32,19 @@ class ArticlesController extends Controller
             ->render();
         return response()->json(['view' => $view,'direction' => $direction]);
         } else {
-            $articles = Article::orderBy('created_at', 'desc')->paginate(4);
-            return view('articles.index')
+            DB::beginTransaction();
+            try {
+                $articles = Article::orderBy('created_at', 'desc')->paginate(4);
+                return view('articles.index')
                 ->with('articles', $articles);
+            }
+            catch (\Exception $e) {
+                DB::rollBack();
+                Session::flash("notice", "Sorry, something went wrong!!");
+                return redirect()->route("articles.index");
+            }
+            DB::commit();
+            
         }
     }
 
@@ -55,8 +66,16 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        Article::create($request->all());
-        Session::flash("notice", "Article success created");
+        DB::beginTransaction();
+        try {
+            Article::create($request->all());
+            Session::flash("notice", "Article success created");
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash("notice", "Sorry, something went wrong!!");
+        }
+        DB::commit();  
         return redirect()->route("articles.index");
     }
 
@@ -68,11 +87,20 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
+        DB::beginTransaction();
+        try {
         $article = Article::find($id);
         $comments = Article::find($id)->comments->sortBy('Comment.created_at');
-        return view('articles.show')
-            ->with('article', $article)
-            ->with('comments', $comments);
+            return view('articles.show')
+                ->with('article', $article)
+                ->with('comments', $comments); }
+        catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash("notice", "Sorry, something went wrong!!");
+            return redirect()->route("articles.index");
+        }
+        DB::commit();
+         
     }
 
     /**
