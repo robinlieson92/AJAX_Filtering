@@ -31,5 +31,5 @@
       {!! $articles->render() !!}
     </div>
   </div>
-  <input id="direction" type="hidden" value="asc" />
+  <input id="direction" type="hidden" value="" />
 </div>

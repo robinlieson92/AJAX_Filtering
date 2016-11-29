@@ -23,29 +23,22 @@ class ArticlesController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $hasil = Article::request_ajax($request);
-            // $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
-            $direction = $hasil['direction'];
-            $view = (String)view('articles._index')
-            ->with('articles', $hasil['view'])
-            ->render();
-        return response()->json(['view' => $view,'direction' => $direction]);
-        } else {
-            DB::beginTransaction();
-            try {
-                $articles = Article::orderBy('created_at', 'desc')->paginate(4);
-                return view('articles.index')
-                ->with('articles', $articles);
+            if ($request->ajax()) {
+                $hasil = Article::request_ajax($request);
+                // $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
+                $direction = $hasil['direction'];
+                $view = (String)view('articles._index')
+                ->with('articles', $hasil['view'])
+                ->render();
+            return response()->json(['view' => $view,'direction' => $direction]);
+            } else {
+
+                    $articles = Article::orderBy('created_at', 'desc')->paginate(4);
+                    return view('articles.index')
+                    ->with('articles', $articles);
+  
+
             }
-            catch (\Exception $e) {
-                DB::rollBack();
-                Session::flash("notice", "Sorry, something went wrong!!");
-                return redirect()->route("articles.index");
-            }
-            DB::commit();
-            
-        }
     }
 
     /**
@@ -73,7 +66,7 @@ class ArticlesController extends Controller
         }
         catch (\Exception $e) {
             DB::rollBack();
-            Session::flash("notice", "Sorry, something went wrong!!");
+            Session::flash("error", "Sorry, something went wrong at ".$e);
         }
         DB::commit();  
         return redirect()->route("articles.index");
@@ -87,7 +80,6 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        DB::beginTransaction();
         try {
         $article = Article::find($id);
         $comments = Article::find($id)->comments->sortBy('Comment.created_at');
@@ -95,11 +87,9 @@ class ArticlesController extends Controller
                 ->with('article', $article)
                 ->with('comments', $comments); }
         catch (\Exception $e) {
-            DB::rollBack();
-            Session::flash("notice", "Sorry, something went wrong!!");
+            Session::flash("error", "Sorry, something went wrong at ".$e);
             return redirect()->route("articles.index");
         }
-        DB::commit();
          
     }
 
@@ -126,8 +116,15 @@ class ArticlesController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
-        Article::find($id)->update($request->all());
-        Session::flash("notice", "Article success updated");
+        DB::beginTransaction();
+        try {
+            Article::find($id)->update($request->all());
+            Session::flash("notice", "Article success updated");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash("error", "Sorry, something went wrong at ".$e);
+        }
+        DB::commit(); 
         return redirect()->route("articles.show", $id);
     }
 
@@ -139,8 +136,16 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        Article::destroy($id);
-        Session::flash("notice", "Article success deleted");
+        DB::beginTransaction();
+        try {
+            Article::find($id)->comments()->forceDelete();
+            Article::destroy($id);
+            Session::flash("notice", "Article success deleted");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash("error", "Sorry, something went wrong at ".$e);
+        }
+        DB::commit(); 
         return redirect()->route("articles.index");
     }
 }

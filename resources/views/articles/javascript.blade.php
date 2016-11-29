@@ -6,8 +6,8 @@
       e.preventDefault();
     });
     $(document).on('click', '#id', function(e) {
-    sort_articles();
-    e.preventDefault();
+      sort_articles();
+      e.preventDefault();
     });
   });
 
@@ -25,13 +25,11 @@
         $('.list').html(data['view']);
         $('#direction').val(data['direction']);
         if(data['direction'] == 'asc') {
-
           $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-up"});
-
-        } else {
-
+        } else if(data['direction'] == 'desc') {
           $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-down"});
-
+        } else {
+           $('.ic-direction').attr({class: ""});
         }
       },
       error : function(xhr, status, error) {
@@ -89,13 +87,11 @@ function sort_articles() {
         $('.list').html(data['view']);
         $('#direction').val(data['direction']);
         if(data['direction'] == 'asc') {
-
-        $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-up"});
-
+          $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-up"});
+        } else if(data['direction'] == 'desc') {
+          $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-down"});
         } else {
-
-        $('.ic-direction').attr({class: "glyphicon glyphicon-arrow-down"});
-
+           $('.ic-direction').attr({class: ""});
         }
       },
       error : function(xhr, status, error) {

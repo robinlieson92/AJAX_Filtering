@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Sentinel;
-use Session;
+use Session, DB;
 use App\Http\Requests\UserRequest;
 
 
@@ -20,9 +20,16 @@ class UsersController extends Controller
 	    //Sentinel::register($request, true);
 	    //// or
       $writerrole = Sentinel::findRoleByName('Writer');
-	    Sentinel::registerAndActivate($request->all())
-        ->roles()->attach($writerrole);
-	    Session::flash('notice', 'Success create new user');
+	    DB::beginTransaction();
+      try {
+        Sentinel::registerAndActivate($request->all())
+          ->roles()->attach($writerrole);
+	      Session::flash('notice', 'Success create new user');
+      } catch (\Exception $e) {
+        DB::rollBack();
+        Session::flash("error", "Sorry, something went wrong at ".$e);
+      }
+      DB::commit();        
 	    return redirect()->back();
   	}
 

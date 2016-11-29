@@ -18,7 +18,7 @@
   {!! link_to(route("export.articles"), "Export", ["class"=>"pull-right btn btn-raised btn-success"]) !!}
 
   {!! Form::open(['route' => 'import.articles', 'files'=>true, 'class' => 'form-horizontal', 'role' => 'form']) !!}
-  <div class="form-group">
+  <div class="form-group is-fileinput">
     {!! Form::label('import', 'Import', array('class' => 'col-sm-8 control-label')) !!}
     <div class="col-sm-4">
       {!! Form::text(null, null, array('class' => 'form-control', 'placeholder'=>"Browse ...", 'readonly' => "")) !!}

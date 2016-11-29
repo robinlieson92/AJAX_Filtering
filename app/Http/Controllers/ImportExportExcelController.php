@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Session, Excel;
+use Session, Excel, DB;
 use App\Http\Requests\ImportExcelRequest;
 use App\Article;
+use App\Comment;
 
 
 use Illuminate\Http\Request;
@@ -45,29 +46,30 @@ class ImportExportExcelController extends Controller
 
     public function importExcelArticles(ImportExcelRequest $request)
     {
-        if($request->file('import_file')->isValid()){
-            $path = $request->file('import_file')->getRealPath();
-            $data = Excel::load($path, function($reader) {
-            })->get();
-            if(!empty($data) && $data->count()){
-                foreach ($data as $key => $value) {
-                    $insert[] = [
-                    'title' => $value->title, 
-                    'content' => $value->content,
-                    'writer' => $value->writer
-                    ];
-                }
-                if(!empty($insert)){
-                    Article::insert($insert);
-                    Session::flash("notice", "Insert Record successfully");
-                    return redirect()->route("articles.index");
-                }
+        if($request->hasFile('import_file')){
+            $import_file = $request->file('import_file');
+
+            $articles = Excel::selectSheetsByIndex(0)->load($import_file, function($reader) {})->get()->toArray();
+
+            foreach ($articles as $value) {
+                $articles = new Article();
+                $articles->title = $value['title'];
+                $articles->content = $value['content'];
+                $articles->writer = $value['writer'];
+                $articles->save();
+            }
+            $articles_id = $articles->id;
+
+            $comments = Excel::selectSheetsByIndex(1)->load($import_file, function($reader) {})->get()->toArray();
+
+            foreach ($comments as $value) {
+                $comments = new Comment();
+                $comments->article_id = $articles_id;
+                $comments->content = $value['content'];
+                $comments->user = $value['user'];
+                $comments->save();
             }
         }
-        else{
-            Session::flash("notice", "Insert Record error");
-            return redirect()->route("articles.index");
-        }
-        return back();
+        return redirect()->route('articles.index');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Comment, App\Article;
-use Session, Validator, Redirect;
+use Session, Validator, Redirect, DB;
 
 class CommentsController extends Controller
 {
@@ -38,16 +38,24 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), Comment::valid());
-      if($validate->fails()) {
+      $validate = Validator::make($request->all(), Comment::valid());
+      if ($validate->fails()) {
         return Redirect::to('articles/'. $request->article_id)
           ->withErrors($validate)
           ->withInput();
       } 
       else 
       {
-        Comment::create($request->all());
-        Session::flash('notice', 'Success add comment');
+        DB::beginTransaction();
+        try {
+            Comment::create($request->all());
+            Session::flash('notice', 'Success add comment');    
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash("error", "Sorry, something went wrong at ".$e);
+        }
+        DB::commit();  
         return Redirect::to('articles/'. $request->article_id);
       }
     }

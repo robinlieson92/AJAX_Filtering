@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use File;
+use File,DB;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Gallery extends Model
